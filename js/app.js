@@ -83,7 +83,7 @@ async function CityWeather(inputCity) {
     return;
   }
 
-  $("main").remove();
+  //$("main").remove();
 
   var loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
   $("body").append(loaderDiv);
