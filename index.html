@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasts | SkyStatus</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="assets/weathericons/disaster.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+    <link rel="stylesheet" href="./style/reset.css">
+    <link rel="stylesheet" href="./style/index.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="screen-navbar">
+            <a class="logo">
+                <img src="assets/weathericons/logo.png" alt="logo">
+            </a>
+            <a href="about-us.html" class="link">
+                <li>About Us</li>
+            </a>
+            <a href="contactform.html" class="link">
+                <li>Contact Form</li>
+            </a>
+            <a href="../index.html">
+                <div class="search-bar" , class="link" , id="my-location-button">
+                    <li>My Location</li>
+                </div>
+            </a>
+            <div class="search-view">
+                <div class="search-bar">
+                    <div class="icon">
+                        <span class="iconify selected" data-icon="mdi:search-web"></span>
+                    </div>
+                    <div class="input">
+                        <input type="text" , id="search-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-navbar">
+            <div class="search-view">
+                <div class="search-bar">
+                    <div class="icon">
+                        <span class="iconify selected" data-icon="mdi:search-web"></span>
+                    </div>
+                    <div class="input">
+                        <input type="text" , id="mobile-search-input">
+                    </div>
+                </div>
+            </div>
+            <div class="nav-icon" class="nav-icon">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div id="mobile-menu" class="overlay">
+                <div class="overlay-content">
+                    <a href="./index.html">Current Location</a>
+                    <a href="about-us.html">About Us</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/weather_model.js"></script>
+    <script src="./js/fill_body.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>

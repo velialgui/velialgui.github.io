@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasts | SkyStatus</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="assets/weathericons/disaster.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/contactus.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="screen-navbar">
+            <a href="index.html" class="logo">
+                <img src="assets/weathericons/logo.png" alt="logo">
+            </a>
+        </div>
+        <div id="mobile-navbar">
+            <div class="search-view">
+                <div class="search-bar">
+                    <div class="icon">
+                        <span class="iconify selected" data-icon="mdi:airplane-search"></span>
+                    </div>
+                    <div class="input">
+                        <input type="text" , class="search-input">
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu" class="overlay">
+                <div class="overlay-content">
+                    <a href="../index.html">Current Location</a>
+                    <a href="./about-us.html">About Us</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="contactus-section">
+            <h1>Contact Form</h1>
+            <form onsubmit="sendEmail(); reset(); return false;">
+                <input type="text" id="name" placeholder="Your name" required>
+                <input type="email" id="email" placeholder="Your email" required>
+                <input type="phone" id="phone" placeholder="Your phone number" required>
+                <textarea id="message" rows="4" placeholder= "How can we help you?"></textarea></textarea> 
+                <button type="submit">Send</button>
+            </form>           
+        </section>
+    </main>
+
+    <script scr="https://smtpjs.com/v3/smtp.js"></script> 
+    <script>
+        function sendEmail(){
+            Email.send({
+                Host : "smtp.gmail.com",
+                Username : "maecomholdings",
+                Password : "fegjyp-Sirtu3-kehmac",
+                To : 'mikhail.semenov@ue-germany.com',
+                From : document.getElementById("email").value ,
+                Subject : "New contact form enquiry ",
+                Body : "Name: " + document. getElementById("name").value
+                    + "<br> Email: " + document. getElementById("email").value
+                    + "<br> Pnone no: " + document. getElementById("phone").value
+                    + "<br> Message: " + document. getElementById("message").value
+            }).then(
+            message => alert("Message sent succesfuly")
+            );
+        }
+    </script>
+</body>
+
+</html>
