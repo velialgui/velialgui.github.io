@@ -1,36 +1,41 @@
 function WeatherModel(weatherData, cityName) {
-  this.lat = weatherData["lat"];
-  this.lon = weatherData["lon"];
+  this.lat = weatherData.lat;
+  this.lon = weatherData.lon;
   this.currentDate = setCurrentDate();
   this.celsiusTemperature = setTemperature(weatherData);
   this.weatherCondition = setWeatherCondition(weatherData);
   this.cityName = cityName;
   this.dailyForecast = setDailyForecast(weatherData);
-  this.sunrise = setSunrise(weatherData);
-  this.sunset = setSunset(weatherData);
-  this.feelsLike = setFeelsLike(weatherData);
-  this.humidity = setHumidity(weatherData);
-  this.windSpeed = setWindSpeed(weatherData);
-  this.uvi = setUVIndex(weatherData);
-  this.dailyForecastListOne = setDailyForecastOne(weatherData);
-  this.dailyForecastListTwo = setDailyForecastTwo(weatherData);
+  this.sunrise = setFormattedTime(weatherData.current.sunrise);
+  this.sunset = setFormattedTime(weatherData.current.sunset);
+  this.feelsLike = setFormattedTemperature(weatherData.current.feels_like);
+  this.humidity = setFormattedPercentage(weatherData.current.humidity);
+  this.windSpeed = setFormattedSpeed(weatherData.current.wind_speed);
+  this.uvi = Math.round(weatherData.current.uvi);
+  this.dailyForecastListOne = setHourlyForecastList(weatherData.hourly.slice(0, 7));
+  this.dailyForecastListTwo = setHourlyForecastList(weatherData.hourly.slice(7, 14));
 }
 
 function setTemperature(weatherData) {
-  celsiusTemp = Math.round(weatherData["current"]["temp"] - 273.15);
-  celsiusTemp = `${celsiusTemp}°C`;
-  return celsiusTemp;
+  const celsiusTemp = Math.round(weatherData.current.temp - 273.15);
+  return `${celsiusTemp}°C`;
 }
 
 function setWeatherCondition(weatherData) {
   let weatherCondition = weatherData.current.weather[0].description;
-  weatherCondition = weatherCondition.replace(/\b\w/g, (match) =>
-    match.toUpperCase()
-  );
-  return weatherCondition;
+  return weatherCondition.charAt(0).toUpperCase() + weatherCondition.slice(1);
 }
 
 function setCurrentDate() {
+  const currentDate = new Date();
+  const dayOfWeek = currentDate.toLocaleDateString("en-US", { weekday: "long" });
+  const dayOfMonth = currentDate.getDate();
+  const month = currentDate.toLocaleDateString("en-US", { month: "long" });
+  return `${dayOfWeek} ${dayOfMonth}, ${month}`;
+}
+
+function setDailyForecast(weatherData) {
+  const dailyForecast = [];
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -40,50 +45,18 @@ function setCurrentDate() {
     "Friday",
     "Saturday",
   ];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
-  const currentDate = new Date();
-  const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  const dayOfMonth = currentDate.getDate();
-  const month = months[currentDate.getMonth()];
-
-  return `${dayOfWeek} ${dayOfMonth}, ${month}`;
-}
-
-function setDailyForecast(weatherData) {
-  dailyForecast = [];
-
-  for (var i = 0; i < 7; i++) {
-    cnt = [];
-
-    const timestamp = weatherData["daily"][i]["dt"] * 1000;
+  for (let i = 0; i < 7; i++) {
+    const dailyData = weatherData.daily[i];
+    const timestamp = dailyData.dt * 1000;
     const dateTime = new Date(timestamp);
-    const weekday = dateTime.toLocaleDateString("en-US", { weekday: "long" });
+    const weekday = daysOfWeek[dateTime.getDay()];
     const abbreviatedWeekday = abbreviateWeekday(weekday);
+    const minC = Math.round(dailyData.temp.min - 273.15);
+    const maxC = Math.round(dailyData.temp.max - 273.15);
+    const icon = dailyData.weather[0].icon;
 
-    const minC = Math.round(weatherData["daily"][i]["temp"]["min"] - 273.15);
-    const maxC = Math.round(weatherData["daily"][i]["temp"]["max"] - 273.15);
-    const icon = weatherData["daily"][i]["weather"][0]["icon"];
-
-    cnt.push(abbreviatedWeekday);
-    cnt.push(`${minC}°C`);
-    cnt.push(`${maxC}°C`);
-    cnt.push(icon);
-
-    dailyForecast.push(cnt);
+    dailyForecast.push([abbreviatedWeekday, `${minC}°C`, `${maxC}°C`, icon]);
   }
 
   return dailyForecast;
@@ -91,115 +64,51 @@ function setDailyForecast(weatherData) {
 
 function abbreviateWeekday(weekday) {
   const weekdays = {
-    Monday: "Mon.",
-    Tuesday: "Tue.",
-    Wednesday: "Wed.",
-    Thursday: "Thu.",
-    Friday: "Fri.",
-    Saturday: "Sat.",
-    Sunday: "Sun.",
+    Monday: "Mon",
+    Tuesday: "Tue",
+    Wednesday: "Wed",
+    Thursday: "Thu",
+    Friday: "Fri",
+    Saturday: "Sat",
+    Sunday: "Sun",
   };
-
   return weekdays[weekday] || weekday;
 }
 
-function setSunrise(weatherData) {
-  var timestamp = weatherData["current"]["sunrise"];
+function setFormattedTime(timestamp) {
   const date = new Date(timestamp * 1000);
   const options = { hour: "numeric", minute: "numeric", hour12: true };
-  const timeFormat = date.toLocaleString("en-US", options);
-
-  return timeFormat;
+  return date.toLocaleString("en-US", options).replace(":00", "");
 }
 
-function setSunset(weatherData) {
-  var timestamp = weatherData["current"]["sunset"];
-  const date = new Date(timestamp * 1000);
-  const options = { hour: "numeric", minute: "numeric", hour12: true };
-  const timeFormat = date.toLocaleString("en-US", options);
-
-  return timeFormat;
+function setFormattedTemperature(temp) {
+  const celsiusTemp = Math.round(temp - 273.15);
+  return `${celsiusTemp}°C`;
 }
 
-function setFeelsLike(weatherData) {
-  var celsiusTemp = Math.round(weatherData["current"]["feels_like"] - 273.15);
-  var feelsLikeCelsius = `${celsiusTemp}°C`;
-
-  return feelsLikeCelsius;
+function setFormattedPercentage(value) {
+  return `${value} %`;
 }
 
-function setHumidity(weatherData) {
-  var humidityTemp = weatherData["current"]["humidity"];
-  var humidity = `${humidityTemp} %`;
-
-  return humidity;
+function setFormattedSpeed(speed) {
+  const wind = Math.round(speed);
+  return `${wind} km/h`;
 }
 
-function setWindSpeed(weatherData) {
-  var wind = Math.round(weatherData["current"]["wind_speed"]);
+function setHourlyForecastList(hourlyData) {
+  const hourlyForecastList = [];
 
-  windSpeed = `${wind} km/h`;
-  return windSpeed;
-}
+  for (let i = 0; i < hourlyData.length; i++) {
+    const hourData = hourlyData[i];
+    const timestamp = hourData.dt * 1000;
+    const timeDate = new Date(timestamp);
+    const options = { hour: "numeric", hour12: true };
+    const time = timeDate.toLocaleTimeString("en-US", options).replace(":00", "");
+    const celsiusTemp = Math.round(hourData.temp - 273.15);
+    const icon = hourData.weather[0].icon;
 
-function setUVIndex(weatherData) {
-  var uvi = Math.round(weatherData["current"]["uvi"]);
-
-  return uvi;
-}
-
-function setDailyForecastOne(weatherData) {
-  var dailyForecastList = [];
-  for (var i = 0; i < 7; i++) {
-    cnt = [];
-
-    var time = Math.round(weatherData["hourly"][i]["dt"] * 1000);
-    var timeDate = new Date(time);
-    var options = { hour: "numeric", hour12: true };
-
-    var timeTime = timeDate
-      .toLocaleTimeString("en-US", options)
-      .replace(":00", "");
-
-    var icon = weatherData["hourly"][i]["weather"][0]["icon"];
-
-    var celsiusTemp = Math.round(weatherData["hourly"][i]["temp"] - 273.15);
-    var celsiusTemp = `${celsiusTemp}°C`;
-
-    cnt.push(timeTime);
-    cnt.push(icon);
-    cnt.push(celsiusTemp);
-
-    dailyForecastList.push(cnt);
+    hourlyForecastList.push([time, icon, `${celsiusTemp}°C`]);
   }
 
-  return dailyForecastList;
-}
-
-function setDailyForecastTwo(weatherData) {
-  var dailyForecastList = [];
-  for (var i = 7; i < 14; i++) {
-    var cnt = [];
-
-    var time = Math.round(weatherData["hourly"][i]["dt"] * 1000);
-    var timeDate = new Date(time);
-    var options = { hour: "numeric", hour12: true };
-
-    var timeTime = timeDate
-      .toLocaleTimeString("en-US", options)
-      .replace(":00", "");
-
-    var celsiusTemp = Math.round(weatherData["hourly"][i]["temp"] - 273.15);
-    var celsiusTemp = `${celsiusTemp}°C`;
-
-    var icon = weatherData["hourly"][i]["weather"][0]["icon"];
-
-    cnt.push(timeTime);
-    cnt.push(icon);
-    cnt.push(celsiusTemp);
-
-    dailyForecastList.push(cnt);
-  }
-
-  return dailyForecastList;
+  return hourlyForecastList;
 }

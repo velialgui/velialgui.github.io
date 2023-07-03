@@ -11,9 +11,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="./style/reset.css">
     <link rel="stylesheet" href="./style/index.css">
@@ -25,7 +24,7 @@
 <body>
     <header>
         <div id="screen-navbar">
-            <a class="logo">
+            <a class="logo" href="#">
                 <img src="assets/weathericons/logo.png" alt="logo">
             </a>
             <a href="about-us.html" class="link">
@@ -34,10 +33,8 @@
             <a href="contactform.html" class="link">
                 <li>Contact Form</li>
             </a>
-            <a href="../index.html">
-                <div class="search-bar" , class="link" , id="my-location-button">
-                    <li>My Location</li>
-                </div>
+            <a href="../index.html" class="link">
+                <li>My Location</li>
             </a>
             <div class="search-view">
                 <div class="search-bar">
@@ -45,7 +42,7 @@
                         <span class="iconify selected" data-icon="mdi:search-web"></span>
                     </div>
                     <div class="input">
-                        <input type="text" , id="search-input">
+                        <input type="text" id="search-input">
                     </div>
                 </div>
             </div>
@@ -57,11 +54,11 @@
                         <span class="iconify selected" data-icon="mdi:search-web"></span>
                     </div>
                     <div class="input">
-                        <input type="text" , id="mobile-search-input">
+                        <input type="text" id="mobile-search-input" aria-label="Search">
                     </div>
                 </div>
             </div>
-            <div class="nav-icon" class="nav-icon">
+            <div class="nav-icon">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -75,7 +72,7 @@
             </div>
         </div>
     </header>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./js/api.js"></script>
     <script src="./js/weather_model.js"></script>

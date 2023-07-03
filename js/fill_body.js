@@ -3,18 +3,14 @@ function createMain(model) {
   var container = $("<div>").addClass("container").appendTo(main);
 
   var content_left = $("<div>").addClass("content-left").appendTo(container);
-  var current_weather = createCurrentWeather(model).appendTo(content_left);
-  $("<section>")
-    .addClass("h2")
-    .appendTo(content_left);
-  var daily_forecast = createDailyForecast(model).appendTo(content_left);
+  createCurrentWeather(model).appendTo(content_left);
+  $("<section>").addClass("h2").appendTo(content_left);
+  createDailyForecast(model).appendTo(content_left);
 
   var content_right = $("<div>").addClass("content-right").appendTo(container);
-  var air_condition = createAirCondition(model).appendTo(content_right);
-  $("<section>")
-    .addClass("h2")
-    .appendTo(content_right);
-  var hourly_forecast = createHourlyForecast(model).appendTo(content_right);
+  createAirCondition(model).appendTo(content_right);
+  $("<section>").addClass("h2").appendTo(content_right);
+  createHourlyForecast(model).appendTo(content_right);
 
   return main;
 }
@@ -27,14 +23,8 @@ function createCurrentWeather(model) {
   $(`<p>${model.weatherCondition}</p>`).appendTo(card);
 
   var list = $("<ul>").appendTo(card);
-  var listItem1 = $("<li>").appendTo(list);
-  listItem1.append(
-    `${model.currentDate}`
-  );
-  var listItem2 = $("<li>").appendTo(list);
-  listItem2.append(
-    `${model.cityName}`
-  );
+  $("<li>").append(`${model.currentDate}`).appendTo(list);
+  $("<li>").append(`${model.cityName}`).appendTo(list);
 
   return current_weather;
 }
@@ -42,20 +32,13 @@ function createCurrentWeather(model) {
 function createDailyForecast(model) {
   var daily_forecast = $("<section>").addClass("daily-forecast");
   var card = $("<div>").addClass("card").appendTo(daily_forecast);
-
   var list = $("<ul>").appendTo(card);
 
   for (var i = 0; i < 7; i++) {
     var listItem = $("<li>").appendTo(list);
     listItem.append($(`<p>${model.dailyForecast[i][0]}</p>`));
-    listItem.append(
-      $(
-        `<p>${model.dailyForecast[i][1]}/<span>${model.dailyForecast[i][2]}</span></p>`
-      )
-    );
-    listItem.append(
-      $(`<img src="./assets/weathericons/${model.dailyForecast[i][3]}.png" alt="">`)
-    );
+    listItem.append($(`<p>${model.dailyForecast[i][1]}/<span>${model.dailyForecast[i][2]}</span></p>`));
+    listItem.append($(`<img src="./assets/weathericons/${model.dailyForecast[i][3]}.png" alt="">`));
   }
 
   return daily_forecast;
@@ -63,55 +46,24 @@ function createDailyForecast(model) {
 
 function createLongWidget(model) {
   var list = $("<ul>").addClass("long");
-  listItem1 = $("<li>").appendTo(list);
-  sunrise = $("<div>").addClass("sunrise").appendTo(listItem1);
-  sunrise.append($("<h3>Sunrise</h3>"));
-  var sunrise_card = $("<div>").addClass("card").appendTo(sunrise);
-  sunrise_card.append(`<p>${model.sunrise}</p>`);
-
-  listItem2 = $("<li>").appendTo(list);
-  sunset = $("<div>").addClass("sunset").appendTo(listItem2);
-  sunset.append($("<h3>Sunset</h3>"));
-  var sunset_card = $("<div>").addClass("card").appendTo(sunset);
-  sunset_card.append(`<p>${model.sunset}</p>`);
+  $("<li>").appendTo(list).append($("<div>").addClass("sunrise").append($("<h3>Sunrise</h3>")).append($("<div>").addClass("card").append(`<p>${model.sunrise}</p>`)));
+  $("<li>").appendTo(list).append($("<div>").addClass("sunset").append($("<h3>Sunset</h3>")).append($("<div>").addClass("card").append(`<p>${model.sunset}</p>`)));
 
   return list;
 }
 
 function createShortWidget(model) {
   var list = $("<ul>").addClass("short");
+  $("<li>").appendTo(list).append($("<div>").addClass("box").append($("<h3>Feels Like</h3>")).append($("<div>").addClass("card").append('<span class="iconify" data-icon="mdi:day-temperature"></span>').append($(`<p>${model.feelsLike}</p>`))));
+  $("<li>").appendTo(list).append($("<div>").addClass("box").append($("<h3>Humidity</h3>")).append($("<div>").addClass("card").append('<span class="iconify" data-icon="mdi:humidity-outline"></span>').append($(`<p>${model.humidity}</p>`))));
+  $("<li>").appendTo(list).append($("<div>").addClass("box").append($("<h3>Wind Speed</h3>")).append($("<div>").addClass("card").append('<span class="iconify" data-icon="logos:windi-css"></span>').append($(`<p>${model.windSpeed}</p>`))));
 
-  feels_like = $("<li>").appendTo(list);
-  feels_like_box = $("<div>").addClass("box").appendTo(feels_like);
-  feels_like_box.append($("<h3>Feels Like</h3>"));
-  feels_like_card = $("<div>").addClass("card").appendTo(feels_like_box);
-  feels_like_card.append(
-    '<span class="iconify" data-icon="mdi:day-temperature"></span>'
-  );
-  feels_like_card.append($(`<p>${model.feelsLike}</p>`));
-
-  humidity = $("<li>").appendTo(list);
-  humidity_box = $("<div>").addClass("box").appendTo(humidity);
-  humidity_box.append($("<h3>Humidity</h3>"));
-  humidity_card = $("<div>").addClass("card").appendTo(humidity_box);
-  humidity_card.append(
-    '<span class="iconify" data-icon="mdi:humidity-outline"></span>'
-  );
-  humidity_card.append($(`<p>${model.humidity}</p>`));
-
-  wind_speed = $("<li>").appendTo(list);
-  wind_speed_box = $("<div>").addClass("box").appendTo(wind_speed);
-  wind_speed_box.append($("<h3>Wind Speed</h3>"));
-  wind_speed_card = $("<div>").addClass("card").appendTo(wind_speed_box);
-  wind_speed_card.append('<span class="iconify" data-icon="logos:windi-css"></span>');
-  wind_speed_card.append($(`<p>${model.windSpeed}</p>`));
   return list;
 }
 
 function createAirCondition(model) {
   var air_condition = $("<section>").addClass("air-condition");
   var container = $("<div>").addClass("container").appendTo(air_condition);
-
   container.append(createLongWidget(model));
   container.append(createShortWidget(model));
 
@@ -120,34 +72,23 @@ function createAirCondition(model) {
 
 function createHourlyForecast(model) {
   var hourly_forecast = $("<section>").addClass("hourly-forecast");
-  var hourly_forecast_container = $("<div>")
-    .addClass("container")
-    .appendTo(hourly_forecast);
+  var hourly_forecast_container = $("<div>").addClass("container").appendTo(hourly_forecast);
 
-  var dailyForecastListOne = model.dailyForecastListOne;
-  var list = $("<ul>");
-  for (var i = 0; i < 7; i++) {
-    var list_item = $("<li>").appendTo(list);
-    list_item.append(`<p>${dailyForecastListOne[i][0]}</p>`);
-    list_item.append(
-      `<img src="./assets/weathericons/${dailyForecastListOne[i][1]}.png" alt="">`
-    );
-    list_item.append(`<p>${dailyForecastListOne[i][2]}</p>`);
-  }
-  hourly_forecast_container.append(list);
-
-  var dailyForecastListTwo = model.dailyForecastListTwo;
-  var list = $("<ul>");
-  for (var i = 0; i < 7; i++) {
-    var list_item = $("<li>").appendTo(list);
-    list_item.append(`<p>${dailyForecastListTwo[i][0]}</p>`);
-    list_item.append(
-      `<img src="./assets/weathericons/${dailyForecastListTwo[i][1]}.png" alt="">`
-    );
-    list_item.append(`<p>${dailyForecastListTwo[i][2]}</p>`);
-  }
-  hourly_forecast_container.append(list);
+  hourly_forecast_container.append(createHourlyForecastList(model.dailyForecastListOne));
+  hourly_forecast_container.append(createHourlyForecastList(model.dailyForecastListTwo));
 
   return hourly_forecast;
 }
 
+function createHourlyForecastList(listData) {
+  var list = $("<ul>");
+
+  for (var i = 0; i < 7; i++) {
+    var listItem = $("<li>").appendTo(list);
+    listItem.append(`<p>${listData[i][0]}</p>`);
+    listItem.append(`<img src="./assets/weathericons/${listData[i][1]}.png" alt="">`);
+    listItem.append(`<p>${listData[i][2]}</p>`);
+  }
+
+  return list;
+}

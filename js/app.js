@@ -1,99 +1,83 @@
 const navIcon = document.querySelector(".nav-icon");
 const overlay = document.querySelector(".overlay");
 
-var searchInput = document.getElementById("search-input");
-var mobileSearchInput = document.getElementById("mobile-search-input");
-var myLocationButton = document.getElementById("my-location-button");
+const searchInput = document.getElementById("search-input");
+const mobileSearchInput = document.getElementById("mobile-search-input");
+const myLocationButton = document.getElementById("my-location-button");
 
 $(document).ready(function () {
   navIcon.addEventListener("click", () => {
     navIcon.classList.toggle("open");
-    if (overlay.style.height === "100%") {
-      overlay.style.height = "0%";
-    } else {
-      overlay.style.height = "100%";
-    }
+    overlay.style.height = overlay.style.height === "100%" ? "0%" : "100%";
   });
 
   CurrentWeather();
 
-  searchInput.addEventListener("keydown", function (event) {
-    if (event.keyCode === 13) {
-      var inputCity = searchInput.value;
-      searchInput.value = "";
-
-      CityWeather(inputCity);
-    }
-  });
-
-  mobileSearchInput.addEventListener("keydown", function (event) {
-    if (event.keyCode === 13) {
-      var inputCity = mobileSearchInput.value;
-      mobileSearchInput.value = "";
-
-      CityWeather(inputCity);
-    }
-  });
-
-  myLocationButton.addEventListener("click", function (event) {
-    CurrentWeather();
-  });
+  searchInput.addEventListener("keydown", handleSearchInput);
+  mobileSearchInput.addEventListener("keydown", handleSearchInput);
+  myLocationButton.addEventListener("click", CurrentWeather);
 });
 
-function CurrentWeather() {
+function handleSearchInput(event) {
+  if (event.keyCode === 13) {
+    const inputCity = this.value;
+    this.value = "";
+
+    CityWeather(inputCity);
+  }
+}
+
+async function CurrentWeather() {
   $("main").remove();
 
-  var loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
+  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
   $("body").append(loaderDiv);
 
-  (async function () {
-    try {
-      var position = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
+  try {
+    const position = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
 
-      var latitude = position.coords.latitude;
-      var longitude = position.coords.longitude;
+    const { latitude, longitude } = position.coords;
 
-      var valid_city = await checkCity(null, latitude, longitude);
+    const validCity = await checkCity(null, latitude, longitude);
 
-      var data = await fetchWeatherData(latitude, longitude);
-      var model = new WeatherModel(data, valid_city[2]);
+    const data = await fetchWeatherData(latitude, longitude);
+    const model = new WeatherModel(data, validCity[2]);
 
-      loaderDiv.remove();
+    loaderDiv.remove();
 
-      $("body").append(createMain(model));
-    } catch (error) {
-      loaderDiv.remove();
-      displayErrorMessage("Permission was denied. Allow it, or just search for a city.");
-    }
-  })();
+    $("body").append(createMain(model));
+  } catch (error) {
+    loaderDiv.remove();
+    displayErrorMessage("Permission was denied. Allow it, or just search for a city.");
+  }
 }
 
 async function CityWeather(inputCity) {
-  if (inputCity === null || inputCity.trim() === "") {
+  if (!inputCity || inputCity.trim() === "") {
     displayErrorMessage("Not a location, get your geography right and try again!");
     return;
   }
 
-  var valid_city = await checkCity(inputCity, null, null);
+  const validCity = await checkCity(inputCity, null, null);
 
-  if (valid_city === false) {
+  if (!validCity) {
     displayErrorMessage("Not a location, get your geography right and try again!");
     return;
   }
 
-  //$("main").remove();
+  $("main").remove();
 
-  var loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
+  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
   $("body").append(loaderDiv);
 
-  latitude = valid_city[0];
-  longitude = valid_city[1];
-  fullCity = valid_city[2];
+  const latitude = validCity[0];
+  const longitude = validCity[1];
+  const fullCity = validCity[2];
 
-  var data = await fetchWeatherData(latitude, longitude);
-  var model = new WeatherModel(data, fullCity);
+  const data = await fetchWeatherData(latitude, longitude);
+  const model = new WeatherModel(data, fullCity);
 
   loaderDiv.remove();
 
@@ -101,7 +85,7 @@ async function CityWeather(inputCity) {
 }
 
 function displayErrorMessage(message) {
-  var popupDiv = $('<div class="popup-div"><div class="popup-message">' + message + '</div><button class="close-button">X</button></div>');
+  const popupDiv = $(`<div class="popup-div"><div class="popup-message">${message}</div><button class="close-button">X</button></div>`);
   $("body").append(popupDiv);
 
   $(".close-button").click(function () {

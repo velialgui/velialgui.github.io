@@ -1,5 +1,5 @@
 body {
-  background-color: #ffffff;
+  background-color: #B388FF;
   color: #ffffff;
   font-family: 'Raleway', sans-serif;
 }
@@ -45,11 +45,12 @@ link {
 .search-view {
   background-color: #4f4b92;
   height: 50px;
-  width: 250px;
+  width: 50px;
   border-radius: 50px;
   display: flex;
   align-items: center;
   cursor: text;
+  background-color: (270, red, blue);
 }
 
 header button {
@@ -473,8 +474,6 @@ main .container {
   transition: background-color 0.5s ease;
 }
 
-
-
 .daily-forecast .card {
   padding: 2rem;
 }
@@ -538,8 +537,6 @@ main .container {
   width: 100%;
   justify-content: space-between;
 }
-
-
 
 .long li {
   background-color: #4f4b92;
