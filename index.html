@@ -2,144 +2,147 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecasts | SkyStatus</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecasts | SkyStatus</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/weathericons/disaster.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="assets/weathericons/disaster.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <link rel="stylesheet" href="./style/all.css">
-    <link rel="stylesheet" href="./style/index.css">
+  <link rel="stylesheet" href="./style/reset.css">
+  <link rel="stylesheet" href="./style/index.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-    
-    <style>
-        @media (max-width: 768px) {
-            .link {
-                display: none;
-            }
-            #screen-navbar {
-                display: none;
-            }
-            .search-bar {
-            transform: translateX(-10px);
-            }
-            #mobile-navbar {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 15px;
-                background-color: #ffffff;
-            }
-            #mobile-menu {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.8);
-                display: none;
-                align-items: center;
-                justify-content: center;
-            }
-            #mobile-menu.open {
-                display: flex;
-            }
+  <style>
+    @media (max-width: 768px) {
+      .link {
+        display: none;
+      }
 
-            .overlay-content {
-                text-align: center;
-            }
-            .overlay-content a {
-                display: block;
-                margin-bottom: 20px;
-                font-size: 24px;
-                color: #fff;
-                text-decoration: none;
-            }
-            .current-weather .card .weather p {
-                font-size: 5rem;
-            }
-            .short p {
-                font-size: 20px;
-            }
-            .sunrise p, .sunset p {
-                font-size: 50px;
-            }
-            .hourly-forecast ul li {
-                margin-top: 10px;
-                font-size: 17px;
-            }
-        }
-    </style>
+      #screen-navbar {
+        display: none;
+      }
+
+      .search-bar {
+        transform: translateX(-10px);
+      }
+
+      #mobile-navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #ffffff;
+      }
+
+      #mobile-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #mobile-menu.open {
+        display: flex;
+      }
+
+      .overlay-content {
+        text-align: center;
+      }
+
+      .overlay-content a {
+        display: block;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <div id="screen-navbar">
-            <a class="logo" href="#">
-                <img src="assets/weathericons/logo.png" alt="logo">
-            </a>
-            <a href="about-us.html" class="link">
-                <li>About Us</li>
-            </a>
-            <a href="contactform.html" class="link">
-                <li>Contact Form</li>
-            </a>
-            <a href="../index.html" class="link">
-                <li>My Location</li>
-            </a>
-            
-            <div class="search-view">
-                <div class="search-bar">
-                    <div class="icon">
-                        <span class="iconify selected" data-icon="mdi:search-web"></span>
-                    </div>
-                    <div class="input">
-                        <input type="text" id="search-input">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="mobile-navbar">
-            <a class="logo" href="#">
-                <img src="assets/weathericons/logo.png" alt="logo">
-            </a>
-            <div class="search-view">
-                <div class="search-bar">
-                    <div class="icon">
-                        <span class="iconify selected" data-icon="mdi:search-web"></span>
-                    </div>
-                    <div class="input">
-                        <input type="text" id="mobile-search-input" aria-label="Search">
-                    </div>
-                </div>
-            </div>
-            <div class="nav-icon">
-                <div></div>
-            </div>
-            <div id="mobile-menu" class="overlay">
-                <div class="overlay-content">
-                    <a href="./index.html">Current Location</a>
-                    <a href="about-us.html">About Us</a>
-                    <a href="#">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </header>
+  <header>
+    <div id="screen-navbar">
+      <a class="logo" href="#">
+        <img src="assets/weathericons/logo.png" alt="logo">
+      </a>
+      <a href="./about-us.html" class="link">
+        <li>About Us</li>
+      </a>
+      <a href="./contactform.html" class="link">
+        <li>Contact Form</li>
+      </a>
+      <a href="./index.html" class="link">
+        <li>My Location</li>
+      </a>
+      <a class="link">
+        <li id="change-temperature" style="color: blue;">C / F</li>
+      </a>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="./js/api.js"></script>
-    <script src="./js/app.js"></script>
-    <script src="./js/body.js"></script>
-    <script src="./js/model.js"></script>
-    
+      <div class="search-view">
+        <div class="search-bar">
+          <div class="icon">
+            <span class="iconify selected" data-icon="mdi:search-web"></span>
+          </div>
+          <div class="input">
+            <input type="text" id="search-input">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="mobile-navbar">
+      <a class="logo" href="#">
+        <img src="assets/weathericons/logo.png" alt="logo">
+      </a>
+      <div class="search-view">
+        <div class="search-bar">
+          <div class="icon">
+            <span class="iconify selected" data-icon="mdi:search-web"></span>
+          </div>
+          <div class="input">
+            <input type="text" id="mobile-search-input" aria-label="Search">
+          </div>
+        </div>
+      </div>
+      <div class="nav-icon">
+        <div></div>
+      </div>
+      <div id="mobile-menu" class="overlay">
+        <div class="overlay-content">
+          <a href="./index.html">Current Location</a>
+          <a href="./about-us.html">About Us</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/weather_model.js"></script>
+  <script src="./js/fill_body.js"></script>
+  <script src="./js/app.js"></script>
+
+  <script>
+    // mobile menu functionality
+    const navIcon = document.querySelector(".nav-icon");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    navIcon.addEventListener("click", () => {
+      navIcon.classList.toggle("open");
+      mobileMenu.classList.toggle("open");
+    });
+  </script>
 </body>
 
 </html>

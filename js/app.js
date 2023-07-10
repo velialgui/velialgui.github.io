@@ -1,23 +1,12 @@
 const navIcon = document.querySelector(".nav-icon");
 const overlay = document.querySelector(".overlay");
 
-function displayErrorMessage(message) {
-  const popupDiv = $(`
-    <div class="popup-div">
-      <div class="popup-message">${message}</div>
-      <button class="close-button">X</button>
-    </div>
-  `);
-  $("body").append(popupDiv);
-
-  $(".close-button").click(function () {
-    popupDiv.remove();
-  });
-}
-
 const searchInput = document.getElementById("search-input");
 const mobileSearchInput = document.getElementById("mobile-search-input");
 const myLocationButton = document.getElementById("my-location-button");
+
+var tempratureCF = "C";
+var changeTemperature = document.getElementById("change-temperature");
 
 $(document).ready(function () {
   navIcon.addEventListener("click", () => {
@@ -27,10 +16,30 @@ $(document).ready(function () {
 
   CurrentWeather();
 
-  [searchInput, mobileSearchInput].forEach(input =>
-    input.addEventListener("keydown", handleSearchInput)
-  );
-  myLocationButton.addEventListener("click", CurrentWeather);
+  searchInput.addEventListener("keydown", handleSearchInput);
+  mobileSearchInput.addEventListener("keydown", handleSearchInput);
+  //myLocationButton.addEventListener("click", CurrentWeather);
+
+  
+  changeTemperature.addEventListener("click", function (event) {
+    let temperatures = document.getElementsByClassName("class-temperature");
+    for (var i = 0; i < temperatures.length; i++) {
+     let current = temperatures[i].innerHTML.split("°");
+     if (tempratureCF == "C"){
+      temperatures[i].innerHTML = `${Math.round(parseInt(current[0]) * 9 / 5 + 32)}°F`;
+    } else {
+      temperatures[i].innerHTML = `${Math.round((parseInt(current[0]) - 32) * 5 / 9)}°C`;
+    }
+  }
+
+  if (tempratureCF == "C"){
+    tempratureCF = "F";
+  } else {
+    tempratureCF = "C";
+
+  }
+
+});
 });
 
 function handleSearchInput(event) {
@@ -45,16 +54,7 @@ function handleSearchInput(event) {
 async function CurrentWeather() {
   $("main").remove();
 
-  const loaderDiv = $(
-    `<div class="loader-div">
-      <div class="loading">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-      </div>
-    </div>`
-  );
+  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
   $("body").append(loaderDiv);
 
   try {
@@ -66,7 +66,7 @@ async function CurrentWeather() {
 
     const validCity = await checkCity(null, latitude, longitude);
 
-    const data = await fetchData(latitude, longitude);
+    const data = await fetchWeatherData(latitude, longitude);
     const model = new WeatherModel(data, validCity[2]);
 
     loaderDiv.remove();
@@ -93,24 +93,28 @@ async function CityWeather(inputCity) {
 
   $("main").remove();
 
-  const loaderDiv = $(
-    `<div class="loader-div">
-      <div class="loading">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-      </div>
-    </div>`
-  );
+  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
   $("body").append(loaderDiv);
 
-  const [latitude, longitude, fullCity] = validCity;
+  const latitude = validCity[0];
+  const longitude = validCity[1];
+  const fullCity = validCity[2];
 
-  const data = await fetchData(latitude, longitude);
+  const data = await fetchWeatherData(latitude, longitude);
   const model = new WeatherModel(data, fullCity);
 
+  $("main").remove();
   loaderDiv.remove();
 
   $("body").append(createMain(model));
+  tempratureCF = "C";
+}
+
+function displayErrorMessage(message) {
+  const popupDiv = $(`<div class="popup-div"><div class="popup-message">${message}</div><button class="close-button">X</button></div>`);
+  $("body").append(popupDiv);
+
+  $(".close-button").click(function () {
+    popupDiv.remove();
+  });
 }
