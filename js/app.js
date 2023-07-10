@@ -1,6 +1,20 @@
 const navIcon = document.querySelector(".nav-icon");
 const overlay = document.querySelector(".overlay");
 
+function displayErrorMessage(message) {
+  const popupDiv = $(`
+    <div class="popup-div">
+      <div class="popup-message">${message}</div>
+      <button class="close-button">X</button>
+    </div>
+  `);
+  $("body").append(popupDiv);
+
+  $(".close-button").click(function () {
+    popupDiv.remove();
+  });
+}
+
 const searchInput = document.getElementById("search-input");
 const mobileSearchInput = document.getElementById("mobile-search-input");
 const myLocationButton = document.getElementById("my-location-button");
@@ -13,8 +27,9 @@ $(document).ready(function () {
 
   CurrentWeather();
 
-  searchInput.addEventListener("keydown", handleSearchInput);
-  mobileSearchInput.addEventListener("keydown", handleSearchInput);
+  [searchInput, mobileSearchInput].forEach(input =>
+    input.addEventListener("keydown", handleSearchInput)
+  );
   myLocationButton.addEventListener("click", CurrentWeather);
 });
 
@@ -30,7 +45,16 @@ function handleSearchInput(event) {
 async function CurrentWeather() {
   $("main").remove();
 
-  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
+  const loaderDiv = $(
+    `<div class="loader-div">
+      <div class="loading">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>`
+  );
   $("body").append(loaderDiv);
 
   try {
@@ -42,7 +66,7 @@ async function CurrentWeather() {
 
     const validCity = await checkCity(null, latitude, longitude);
 
-    const data = await fetchWeatherData(latitude, longitude);
+    const data = await fetchData(latitude, longitude);
     const model = new WeatherModel(data, validCity[2]);
 
     loaderDiv.remove();
@@ -69,26 +93,24 @@ async function CityWeather(inputCity) {
 
   $("main").remove();
 
-  const loaderDiv = $('<div class="loader-div"><div class="loading"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>');
+  const loaderDiv = $(
+    `<div class="loader-div">
+      <div class="loading">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>`
+  );
   $("body").append(loaderDiv);
 
-  const latitude = validCity[0];
-  const longitude = validCity[1];
-  const fullCity = validCity[2];
+  const [latitude, longitude, fullCity] = validCity;
 
-  const data = await fetchWeatherData(latitude, longitude);
+  const data = await fetchData(latitude, longitude);
   const model = new WeatherModel(data, fullCity);
 
   loaderDiv.remove();
 
   $("body").append(createMain(model));
-}
-
-function displayErrorMessage(message) {
-  const popupDiv = $(`<div class="popup-div"><div class="popup-message">${message}</div><button class="close-button">X</button></div>`);
-  $("body").append(popupDiv);
-
-  $(".close-button").click(function () {
-    popupDiv.remove();
-  });
 }

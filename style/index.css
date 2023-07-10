@@ -586,6 +586,13 @@ main .container {
   padding: 15px;
 }
 
+/*c/f*/
+link {
+  color: #4f4b92;
+  font-family: 'Raleway', sans-serif;
+  font-size: 30px;
+}
+
 /*hf*/
 
 .hourly-forecast {
