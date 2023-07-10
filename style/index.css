@@ -1,5 +1,6 @@
+/*background*/
 body {
-  background-color: #B388FF;
+  background-color: #ffffff;
   color: #ffffff;
   font-family: 'Raleway', sans-serif;
 }
@@ -12,9 +13,7 @@ main img:hover {
   transform: scale(1.1);
 }
 
-/*-----------------------------------*\
-  HEADER
-\*-----------------------------------*/
+/*header*/
 
 #screen-navbar {
   width: 100vm;
@@ -45,7 +44,7 @@ link {
 .search-view {
   background-color: #4f4b92;
   height: 50px;
-  width: 50px;
+  width: 250px;
   border-radius: 50px;
   display: flex;
   align-items: center;
@@ -100,18 +99,8 @@ header button {
   font-size: 40px;
 }
 
-/*-----------------------------------*\
-  Mobile
-\*-----------------------------------*/
+/*mobile*/
 
-#mobile-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1001;
-  width: 94vm;
-  padding: 10px 20px;
-}
 
 .nav-icon {
   position: relative;
@@ -162,19 +151,8 @@ header button {
   transition: 0.3s;
 }
 
-.nav-icon.open div:nth-child(1) {
-  transform: rotate(45deg);
-}
 
-.nav-icon.open div:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-icon.open div:nth-child(3) {
-  transform: rotate(-45deg);
-}
-
-/* Loader MINE*/
+/*loader*/
 
 .loader-div {
   background: #4f4b92;
@@ -365,9 +343,7 @@ input:-webkit-autofill:active {
   }
 }
 
-/*-----------------------------------*\
-  MAIN
-\*-----------------------------------*/
+/*main*/
 
 main {
   width: 100vm;
@@ -406,9 +382,7 @@ main .container {
   justify-content: space-between;
 }
 
-/*-----------------------------------*\
-  # CURRENT WEATHER
-\*-----------------------------------*/
+/*cuw*/
 
 .current-weather {
   background-color: #4f4b92;
@@ -462,9 +436,7 @@ main .container {
   color: #ffffff;
 }
 
-/*-----------------------------------*\
-  # DAILY FORECAST
-\*-----------------------------------*/
+/*df*/
 
 .daily-forecast {
   background-color: #4f4b92;
@@ -504,9 +476,7 @@ main .container {
   height: auto;
 }
 
-/*-----------------------------------*\
-  # Highlights
-\*-----------------------------------*/
+/*highlights*/
 
 .air-condition {
   background-color: #4f4b92;
@@ -616,9 +586,7 @@ main .container {
   padding: 15px;
 }
 
-/*-----------------------------------*\
-  # Hourly Forecast
-\*-----------------------------------*/
+/*hf*/
 
 .hourly-forecast {
   width: 100%;
@@ -632,7 +600,7 @@ main .container {
 
 .hourly-forecast .container ul {
   display: flex;
-  gap: 18px;
+  gap: 10px;
   margin-bottom: 18px;
   align-items: center;
 }
@@ -655,7 +623,7 @@ main .container {
   height: auto;
 }
 
-/* DESKTOP */
+/*dt*/
 
 @media all and (min-width: 1729px) {
   #mobile-navbar {
@@ -685,6 +653,7 @@ main .container {
 }
 
 /* TABLET LANDSCAPE */
+
 @media all and (min-width: 768px) and (max-width: 1024px) {
   #mobile-navbar {
     display: none;
@@ -747,7 +716,7 @@ main .container {
   }
 
   .content-left {
-    width: 100%;
+    width: 60%;
   }
 
   .content-right {
@@ -769,7 +738,7 @@ main .container {
 
   .sunrise .card p,
   .sunset .card p {
-    font-size: 50px;
+    font-size: 10px;
   }
 
   .short {
@@ -792,5 +761,9 @@ main .container {
 
   .hourly-forecast .container ul li {
     width: 100px;
+  }
+
+  .daily-forecast {
+    display: none;
   }
 }
